@@ -61,15 +61,14 @@
         var text = $('#<%= Recaptcha1.ClientID %> #recaptcha_response_field').val();
         args.IsValid = (text.length > 0);
     }
-	function onLoadreCaptcha() {
-		try {
-			$("#<%= Recaptcha1.ClientID %>_Ctrl").empty();
-			grecaptcha.render('<%= Recaptcha1.ClientID %>_Ctrl', {
-				'sitekey' : '<%= GetreCaptchaPublicKey %>',
-				'theme' : '<%= GetreCaptchaTheme %>'
-			});
-		}
-		catch(e) { }
+    function onLoadreCaptcha() {
+        try {
+            $("#<%= Recaptcha1.ClientID %>_Ctrl").empty();
+            grecaptcha.render('<%= Recaptcha1.ClientID %>_Ctrl', {
+                'sitekey': '<%= GetreCaptchaPublicKey %>',
+                'theme': '<%= GetreCaptchaTheme %>'
+            });
+        } catch (e) { }
 	}
     (function ($, Sys) {
         function setupDnnContactFormSiteSettings() {
@@ -121,20 +120,21 @@
             });
             setupDnnContactFormSiteSettings();
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-                setTimeout(function() {
-                    $('#divMessage').show(); 
-                    setTimeout(function() {
-                        $('#divMessage').fadeOut('slow', function () {
-                            $('#divMessage').hide();
-                        }); 
-                    }, 5000);
-                }, 500);
-                setupDnnContactFormSiteSettings();
-                if(<%= EnableGooglereCaptcha.ToString().ToLower() %>) {
-                    onLoadreCaptcha();
-                }
-        });
-            setTimeout(onLoadreCaptcha, 1000);
+                try {
+                    setTimeout(function () {
+                        $('#divMessage').show();
+                        setTimeout(function () {
+                            $('#divMessage').fadeOut('slow', function () {
+                                $('#divMessage').hide();
+                            });
+                        }, 5000);
+                    }, 500);
+                    setupDnnContactFormSiteSettings();
+                    if (<%= EnableGooglereCaptcha.ToString().ToLower() %>) {
+                        setTimeout(onLoadreCaptcha, 1000);
+                    }
+                } catch (err) { }
+            });
         });
 
     }(jQuery, window.Sys));
