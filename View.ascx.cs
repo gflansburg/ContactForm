@@ -53,7 +53,7 @@ namespace Gafware.Modules.ContactForm
             }
             if (!Page.ClientScript.IsClientScriptBlockRegistered(c_jqTransformKey) && EnableGooglereCaptcha)
             {
-                string scriptToRenderCaptcha = @" <script src=""https://www.google.com/recaptcha/api.js?onload=onLoadreCaptcha&render=explicit"" async defer></script>";
+                string scriptToRenderCaptcha = @" <script src=""https://www.google.com/recaptcha/api.js?onload=onLoadContactFormreCaptcha&render=explicit"" async defer></script>";
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(), c_jRecaptchaAjax, scriptToRenderCaptcha , false);
             }
             Page.Header.Controls.Add(new System.Web.UI.LiteralControl(String.Format(CSS_TAG_INCLUDE_FORMAT, String.Concat(this.ControlPath, "js/jqTransform/jqtransform.css"))));
