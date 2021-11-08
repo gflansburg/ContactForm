@@ -233,7 +233,7 @@ namespace Gafware.Modules.ContactForm
                     email.FromAddress = txtemail.Text;
                     email.BccAddress = GetBccAddress;
                     email.Message = txtmessage.Text;
-                    email.Area = ddarea.SelectedItem.Text;
+                    email.Area = ddarea.SelectedValue;
                     if (!UseDnnSettings)
                     {
                         String msg = String.Empty;
