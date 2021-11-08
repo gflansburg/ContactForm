@@ -233,7 +233,7 @@ namespace Gafware.Modules.ContactForm
                     email.FromAddress = txtemail.Text;
                     email.BccAddress = GetBccAddress;
                     email.Message = txtmessage.Text;
-                    email.Area = ddarea.SelectedValue;
+                    email.Area = ddarea.SelectedItem.Text;
                     if (!UseDnnSettings)
                     {
                         String msg = String.Empty;
@@ -258,12 +258,32 @@ namespace Gafware.Modules.ContactForm
                     else
                     {
                         System.Text.StringBuilder strMail = new System.Text.StringBuilder();
-                
+
                         //Create Body for Email
-	                    strMail.Append("Submitter's Name: " + email.Name + "<br />");
-	                    strMail.Append("Sender Email: " + email.FromAddress + "<br />");
-                        strMail.Append("Sender Phone: " + email.ContactNumber + "<br /><br />");
-                        strMail.Append(email.Message);
+                        if (!String.IsNullOrEmpty(email.Name))
+                        {
+                            strMail.Append("Submitter's Name: " + email.Name + "<br />");
+                        }
+                        if (!String.IsNullOrEmpty(email.FromAddress))
+                        {
+                            strMail.Append("Sender Email: " + email.FromAddress + "<br />");
+                        }
+                        if (IsPhoneFieldVisible && !String.IsNullOrEmpty(email.ContactNumber))
+                        {
+                            strMail.Append("Sender Phone: " + email.ContactNumber + "<br />");
+                        }
+                        if (IsAreaFieldVisible && !String.IsNullOrEmpty(email.Area))
+                        {
+                            strMail.Append("Request Area: " + email.Area + "<br />");
+                        }
+                        if (strMail.Length < 0 && !String.IsNullOrEmpty(email.Message))
+                        {
+                            strMail.Append("<br />");
+                        }
+                        if (!String.IsNullOrEmpty(email.Message))
+                        {
+                            strMail.Append(email.Message);
+                        }
                         string error = String.Empty;
                         if (SendEmailUsingDnn(email.FromAddress, GetFromAddress, GetToAddress(email.Area), email.BccAddress, GetEmailsubject, strMail.ToString(), ref error))
                         {
