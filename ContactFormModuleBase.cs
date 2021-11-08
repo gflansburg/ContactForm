@@ -332,7 +332,7 @@ namespace Gafware.Modules.ContactForm
         {
             get
             {
-                _enablerecaptcha = false;
+                _enablerecaptcha = true;
                 if (Settings.Contains("EnableGooglereCaptcha"))
                 {
                     if (!string.IsNullOrWhiteSpace(Settings["EnableGooglereCaptcha"].ToString()))

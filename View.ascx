@@ -42,7 +42,7 @@
         </asp:Panel>
         <div style="text-align: center; width: 302px; margin: 0 auto 0 auto;"><cc1:GoogleReCaptcha ID="Recaptcha1"  runat="server" /></div>
         <br style="clear: both;" />
-        <div style="text-align: center; width: 100%;"><asp:CustomValidator ID="rfvRecaptcha" runat="server" Display="Dynamic" CssClass="dnnFormMessage dnnFormError" ValidationGroup="ContactForm" ClientValidationFunction="validateRecaptchaLength" Enabled="false" /></div>
+        <div style="text-align: center; width: 100%;"><asp:CustomValidator ID="rfvRecaptcha" runat="server" Display="Dynamic" CssClass="dnnFormMessage dnnFormError" ValidationGroup="ContactForm" ClientValidationFunction="validateContactFormRecaptchaLength" Enabled="false" /></div>
         <div style="text-align: center; width: 100%;"><asp:CustomValidator ID="cvRecaptcha" runat="server" Display="Dynamic" CssClass="dnnFormMessage dnnFormError" ValidationGroup="ContactForm" Enabled="false" /></div>
         <br style="clear: both;" />
         <asp:Panel ID="pnlMessage" runat="server" Visible="false">
@@ -57,11 +57,11 @@
     </fieldset>
 </div>
 <script language="javascript" type="text/javascript">/*<![CDATA[*/
-    function validateRecaptchaLength(oSrc, args) {
+    function validateContactFormRecaptchaLength(oSrc, args) {
         var text = $('#<%= Recaptcha1.ClientID %> #recaptcha_response_field').val();
         args.IsValid = (text.length > 0);
     }
-    function onLoadreCaptcha() {
+    function onLoadContactFormreCaptcha() {
         try {
             $("#<%= Recaptcha1.ClientID %>_Ctrl").empty();
             grecaptcha.render('<%= Recaptcha1.ClientID %>_Ctrl', {
@@ -131,7 +131,7 @@
                     }, 500);
                     setupDnnContactFormSiteSettings();
                     if (<%= EnableGooglereCaptcha.ToString().ToLower() %>) {
-                        setTimeout(onLoadreCaptcha, 1000);
+                        setTimeout(onLoadContactFormreCaptcha, 1000);
                     }
                 } catch (err) { }
             });
