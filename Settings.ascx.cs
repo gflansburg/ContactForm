@@ -92,6 +92,7 @@ namespace Gafware.Modules.ContactForm
                     phoneError.Text = PhoneErrorMSG;
                     emailmsg.Text = EmailMSG;
                     chkprofanity.Checked = ProfanityCheck;
+                    chkprofanityFilter.Checked = EnableProfanityFilter;
                     txtprofanitymsg.Text = ProfanityMSG;
                     txtemailsent.Text = EmailSentOK;
                     txtemailerror.Text = EmailNotSent;
@@ -110,7 +111,8 @@ namespace Gafware.Modules.ContactForm
                     divAreaField.Visible = AreaField.Checked;
                     divContactNumberField.Visible = chkContactNumberField.Checked;
                     divMessageField.Visible = chkMessageField.Checked;
-                    divProfanityCheck.Visible = chkprofanity.Checked;
+                    divProfanityCheck.Visible = !chkprofanityFilter.Checked;
+                    divProfanityFilter.Visible = chkprofanity.Checked;
                     pnlReply.Visible = chkusereply.Checked;
                 }
             }
@@ -187,6 +189,7 @@ namespace Gafware.Modules.ContactForm
                 modules.UpdateTabModuleSetting(TabModuleId, "EmailErrorMSG", emailError.Text);
                 modules.UpdateTabModuleSetting(TabModuleId, "PhoneErrorMSG", phoneError.Text);
                 modules.UpdateTabModuleSetting(TabModuleId, "EnableProfanity", chkprofanity.Checked.ToString());
+                modules.UpdateTabModuleSetting(TabModuleId, "EnableProfanityFilter", chkprofanityFilter.Checked.ToString());
                 modules.UpdateTabModuleSetting(TabModuleId, "ProfanityMessage", txtprofanitymsg.Text);
                 modules.UpdateTabModuleSetting(TabModuleId, "AreaDefault", AreaDefault.SelectedValue);
                 modules.UpdateTabModuleSetting(TabModuleId, "AreaVisible", AreaVisible.Checked.ToString());
@@ -236,6 +239,7 @@ namespace Gafware.Modules.ContactForm
                 modules.DeleteModuleSetting(ModuleId, "EmailErrorMSG");
                 modules.DeleteModuleSetting(ModuleId, "PhoneErrorMSG");
                 modules.DeleteModuleSetting(ModuleId, "EnableProfanity");
+                modules.DeleteModuleSetting(ModuleId, "EnableProfanityFilter");
                 modules.DeleteModuleSetting(ModuleId, "ProfanityMessage");
                 modules.DeleteModuleSetting(ModuleId, "AreaDefault");
                 modules.DeleteModuleSetting(ModuleId, "AreaVisible");
@@ -359,12 +363,18 @@ namespace Gafware.Modules.ContactForm
 
         protected void chkprofanity_CheckedChanged(object sender, EventArgs e)
         {
-            divProfanityCheck.Visible = chkprofanity.Checked;
+            divProfanityCheck.Visible = !chkprofanityFilter.Checked;
+            divProfanityFilter.Visible = chkprofanity.Checked;
         }
 
         protected void chkusereply_CheckedChanged(object sender, EventArgs e)
         {
             pnlReply.Visible = chkusereply.Checked;
+        }
+
+        protected void chkprofanityFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            divProfanityCheck.Visible = !chkprofanityFilter.Checked;
         }
     }
 }

@@ -122,6 +122,10 @@
         <dnn:Label ID="profanitycheck" runat="server" ControlName="chkprofanity" Suffix=":" />
         <asp:CheckBox runat="server" ID="chkprofanity" AutoPostBack="true" OnCheckedChanged="chkprofanity_CheckedChanged" />
     </div>
+    <div class="dnnFormItem" id="divProfanityFilter" runat="server">
+        <dnn:Label ID="profanityfilter" runat="server" ControlName="chkprofanityFilter" Suffix=":" />
+        <asp:CheckBox runat="server" ID="chkprofanityFilter" AutoPostBack="true" OnCheckedChanged="chkprofanityFilter_CheckedChanged" />
+    </div>
     <div class="dnnFormItem" id="divProfanityCheck" runat="server">
         <dnn:Label ID="profanitymsg" runat="server" ControlName="txtprofanitymsg" Suffix=":" />
         <asp:TextBox runat="server" ID="txtprofanitymsg"></asp:TextBox>

@@ -730,6 +730,27 @@ namespace Gafware.Modules.ContactForm
             set { _profanitycheck = value; }
         }
 
+        private bool _profanityfilter;
+
+        public bool EnableProfanityFilter
+        {
+            get
+            {
+                _profanityfilter = false;
+
+                if (Settings.Contains("EnableProfanityFilter"))
+                {
+                    if (!string.IsNullOrWhiteSpace(Settings["EnableProfanityFilter"].ToString()))
+                    {
+                        bool.TryParse(Settings["EnableProfanityFilter"].ToString(), out _profanityfilter);
+                    }
+                }
+
+                return _profanityfilter;
+            }
+            set { _profanityfilter = value; }
+        }
+
         private string _profanitymsg;
 
         public string ProfanityMSG

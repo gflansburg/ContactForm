@@ -117,7 +117,7 @@
                 ignore_onbeforeunload = false;
             });
             $('#<%= btnSubmit.ClientID %>').click(function (e) {
-                showBlockingScreen("Sending");
+                //showBlockingScreen("Sending");
             });
             setupDnnContactFormSiteSettings();
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
@@ -127,7 +127,7 @@
                         $('#divMessage').fadeOut('slow', function () {
                             $('#divMessage').hide();
                         }); 
-                    }, 2000);
+                    }, 5000);
                 }, 500);
                 setupDnnContactFormSiteSettings();
                 if(<%= EnableGooglereCaptcha.ToString().ToLower() %>) {

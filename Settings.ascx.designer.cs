@@ -582,6 +582,33 @@ namespace Gafware.Modules.ContactForm
         protected global::System.Web.UI.WebControls.CheckBox chkprofanity;
 
         /// <summary>
+        /// divProfanityFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProfanityFilter;
+
+        /// <summary>
+        /// profanityfilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl profanityfilter;
+
+        /// <summary>
+        /// chkprofanityFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkprofanityFilter;
+
+        /// <summary>
         /// divProfanityCheck control.
         /// </summary>
         /// <remarks>

@@ -95,6 +95,10 @@
               <name>Gafware.ContactForm.dll</name>
               <path>bin</path>
             </assembly>
+            <assembly>
+              <name>ProfanityFilter.dll</name>
+              <path>bin</path>
+            </assembly>
           </assemblies>
         </component>
       </components>

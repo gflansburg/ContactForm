@@ -840,6 +840,27 @@ namespace Gafware.Modules.ContactForm
             set { _profanitycheck = value; }
         }
 
+        private bool _profanityfilter;
+
+        public bool EnableProfanityFilter
+        {
+            get
+            {
+                _profanityfilter = false;
+
+                if (Settings.Contains("EnableProfanityFilter"))
+                {
+                    if (!string.IsNullOrWhiteSpace(Settings["EnableProfanityFilter"].ToString()))
+                    {
+                        bool.TryParse(Settings["EnableProfanityFilter"].ToString(), out _profanityfilter);
+                    }
+                }
+
+                return _profanityfilter;
+            }
+            set { _profanityfilter = value; }
+        }
+
         private string _profanitymsg;
 
         public string ProfanityMSG
@@ -932,10 +953,6 @@ namespace Gafware.Modules.ContactForm
         protected string GetToAddress(string area)
         {
             string emailAddress = ContactController.GetContact(area, PortalId);
-            if (String.IsNullOrWhiteSpace(emailAddress))
-            {
-                emailAddress = "support@gafware.com";
-            }
             string[] aryEmail = emailAddress.Split(',', ';');
             emailAddress = String.Empty;
             foreach (string email in aryEmail)
@@ -959,12 +976,32 @@ namespace Gafware.Modules.ContactForm
 
                 //Create stringbuilder to build email body
                 StringBuilder strMail = new StringBuilder();
-                
+
                 //Create Body for Email
-	            strMail.Append("Submitter's Name: " + email.Name + "<br />");
-	            strMail.Append("Sender Email: " + email.FromAddress + "<br />");
-                strMail.Append("Sender Phone: " + email.ContactNumber + "<br /><br />");
-                strMail.Append(email.Message);
+                if (!String.IsNullOrEmpty(email.Name))
+                {
+                    strMail.Append("Submitter's Name: " + email.Name + "<br />");
+                }
+                if (!String.IsNullOrEmpty(email.FromAddress))
+                {
+                    strMail.Append("Sender Email: " + email.FromAddress + "<br />");
+                }
+                if(IsPhoneFieldVisible)
+                {
+                    strMail.Append("Sender Phone: " + email.ContactNumber + "<br />");
+                }
+                if (IsAreaFieldVisible)
+                {
+                    strMail.Append("Request Area: " + email.Area + "<br />");
+                }
+                if(strMail.Length < 0 && !String.IsNullOrEmpty(email.Message))
+                {
+                    strMail.Append("<br />");
+                }
+                if (!String.IsNullOrEmpty(email.Message))
+                {
+                    strMail.Append(email.Message);
+                }
 
                 //Create Mail Object
                 MailMessage mail = new MailMessage();
@@ -1135,20 +1172,16 @@ namespace Gafware.Modules.ContactForm
             return stringb;
         }
 
-        public static bool profanityChecker(string message)
+        public bool profanityChecker(ref string message)
         {
-
-            var url = @"http://www.wdyl.com/profanity?q=" + message;
-            WebClient webClient = new WebClient();
-            Stream stream = webClient.OpenRead(url);
-            StreamReader reader = new StreamReader(stream);
-            var request = reader.ReadToEnd();
-            var outObject = JsonConvert.DeserializeObject<profanitycheck>(request);
-            return outObject.Response;
-        }
-        public class profanitycheck
-        {
-            public bool Response { get; set; }
+            var filter = new ProfanityFilter.ProfanityFilter();
+            if (!EnableProfanityFilter)
+            {
+                var swearList = filter.DetectAllProfanities(message);
+                return swearList.Count > 0;
+            }
+            message = filter.CensorString(message);
+            return false;
         }
     }
 }

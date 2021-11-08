@@ -312,4 +312,7 @@
   <data name="PhoneFieldVisible.Text" xml:space="preserve">
     <value>Phone Visible</value>
   </data>
+  <data name="profanityfilter.Text" xml:space="preserve">
+    <value>Message Field Profanity Filter</value>
+  </data>
 </root>

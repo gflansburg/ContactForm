@@ -174,9 +174,14 @@ namespace Gafware.Modules.ContactForm
         {
             if (!string.IsNullOrWhiteSpace(txtmessage.Text) && ProfanityCheck)
             {
-                if (profanityChecker(txtmessage.Text))
+                string message = txtmessage.Text;
+                if (profanityChecker(ref message))
                 {
                     cvProfanity.IsValid = false;
+                }
+                else
+                {
+                    txtmessage.Text = message;
                 }
             }
             if (EnableGooglereCaptcha)
@@ -215,20 +220,20 @@ namespace Gafware.Modules.ContactForm
 
         protected void btnsubmit_Click(object sender, EventArgs e)
         {
-            EmailObject email = new EmailObject();
-            email.PortalID = PortalId;
-            email.Name = txtfirstname.Text + " " + txtlastname.Text;
-            email.ContactNumber = txtcontactno.Text;
-            email.FromAddress = txtemail.Text;
-            email.BccAddress = GetBccAddress;
-            email.Message = txtmessage.Text;
-            email.Area = ddarea.SelectedValue;
             try
             {
                 clearerrors();
                 VerifyFields();
                 if (Page.IsValid)
                 {
+                    EmailObject email = new EmailObject();
+                    email.PortalID = PortalId;
+                    email.Name = txtfirstname.Text + " " + txtlastname.Text;
+                    email.ContactNumber = txtcontactno.Text;
+                    email.FromAddress = txtemail.Text;
+                    email.BccAddress = GetBccAddress;
+                    email.Message = txtmessage.Text;
+                    email.Area = ddarea.SelectedValue;
                     if (!UseDnnSettings)
                     {
                         String msg = String.Empty;
@@ -293,10 +298,6 @@ namespace Gafware.Modules.ContactForm
 
         public void ClearForm()
         {
-            txtfirstname.Text = String.Empty;
-            txtlastname.Text = String.Empty;
-            txtcontactno.Text = String.Empty;
-            txtemail.Text = String.Empty;
             txtmessage.Text = String.Empty;
             if (ddarea.Items.FindByValue(DefaultArea) != null)
             {
