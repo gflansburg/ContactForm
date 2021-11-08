@@ -1,0 +1,389 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_Contacts]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts(
+		[ContactID] [int] IDENTITY(1,1) NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[QueryCode] [nvarchar](50) NOT NULL,
+		[EmailAddress] [nvarchar](255) NOT NULL
+	) ON [PRIMARY]
+	ALTER TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts ADD CONSTRAINT 
+		PK_{objectQualifier}Gafware_ContactForm_Contacts PRIMARY KEY CLUSTERED 
+		(
+			[ContactID] ASC
+		)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_QuestionTypes]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes(
+		[QuestionTypeID] [int] IDENTITY(1,1) NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[QueryCode] [nvarchar](50) NOT NULL,
+		[Topic] [nvarchar](50) NOT NULL
+	) ON [PRIMARY]
+	ALTER TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes ADD CONSTRAINT 
+		PK_{objectQualifier}Gafware_ContactForm_QuestionTypes PRIMARY KEY CLUSTERED 
+		(
+			[QuestionTypeID] ASC
+		)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_Emails]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails
+		(
+		[EmailID] int NOT NULL IDENTITY (1, 1),
+		[PortalID] int NOT NULL,
+		[FromAddress] nvarchar(255) NOT NULL,
+		[BccAddress] nvarchar(255) NULL,
+		[Message] nvarchar(2000) NULL,
+		[ContactNumber] nvarchar(20) NULL,
+		[Name] nvarchar(100) NOT NULL,
+		[Area] nvarchar(50) NULL,
+		[DateSent] datetime NOT NULL
+		)  ON [PRIMARY]
+	ALTER TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails ADD CONSTRAINT
+		DF_{objectQualifier}Gafware_ContactForm_Emails_DateSent DEFAULT getdate() FOR DateSent
+	ALTER TABLE {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails ADD CONSTRAINT
+		PK_{objectQualifier}Gafware_ContactForm_Emails PRIMARY KEY CLUSTERED 
+		(
+		EmailID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetContact]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetContact]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetContactById]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetContactById]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetContacts]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetContacts]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_DeleteContact]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_DeleteContact]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_AddContact]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_AddContact]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_UpdateContact]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_UpdateContact]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetQuestionType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetQuestionType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetQuestionTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetQuestionTypes]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_DeleteQuestionType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_DeleteQuestionType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_AddQuestionType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_AddQuestionType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_UpdateQuestionType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_UpdateQuestionType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetEmail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetEmail]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_GetEmails]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_GetEmails]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_DeleteEmail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_DeleteEmail]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_AddEmail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_AddEmail]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_ContactForm_UpdateEmail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_ContactForm_UpdateEmail]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetContact
+	@QueryCode nvarchar(50),
+	@PortalID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT EmailAddress FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts WHERE QueryCode = @QueryCode AND PortalID = @PortalID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetContactById
+	@ContactID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts WHERE ContactID = @ContactID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetContacts
+	@PortalID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts WHERE PortalID = @PortalID ORDER BY QueryCode
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_UpdateContact
+	@ContactID int,
+	@PortalID int,
+	@QueryCode nvarchar(50),
+	@EmailAddress nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts
+	SET PortalID = @PortalID,
+		QueryCode = @QueryCode,
+		EmailAddress = @EmailAddress
+	WHERE ContactID = @ContactID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_DeleteContact
+	@ContactID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts WHERE ContactID = @ContactID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_AddContact
+	@QueryCode nvarchar(50),
+	@PortalID int,
+	@EmailAddress nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	INSERT INTO {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts (PortalID, QueryCode, EmailAddress) VALUES (@PortalID, @QueryCode, @EmailAddress)
+	SELECT @@IDENTITY
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetQuestionType
+	@QuestionTypeID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes WHERE QuestionTypeID = @QuestionTypeID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetQuestionTypes
+	@PortalID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes WHERE PortalID = @PortalID ORDER BY Topic
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_DeleteQuestionType
+	@QuestionTypeID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+    DECLARE @QueryCode nvarchar(50)
+    SET @QueryCode = (SELECT QueryCode FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes WHERE QuestionTypeID = @QuestionTypeID)
+    IF (@QueryCode IS NOT NULL)
+    BEGIN
+		DELETE FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts WHERE QueryCode LIKE '%-' + @QueryCode
+    END
+	DELETE FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes WHERE QuestionTypeID = @QuestionTypeID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_AddQuestionType
+	@QueryCode nvarchar(50),
+	@PortalID int,
+	@Topic nvarchar(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+    INSERT INTO {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts (PortalID, QueryCode, EmailAddress) VALUES (@PortalID, @QueryCode, '')
+	INSERT INTO {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes (PortalID, QueryCode, Topic) VALUES (@PortalID, @QueryCode, @Topic)
+	SELECT @@IDENTITY
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_UpdateQuestionType
+	@QuestionTypeID int,
+	@PortalID int,
+	@QueryCode nvarchar(50),
+	@Topic nvarchar(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+    DECLARE @OldQueryCode nvarchar(50)
+    SET @OldQueryCode = (SELECT QueryCode FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes WHERE QuestionTypeID = @QuestionTypeID)
+    IF (@OldQueryCode <> @QueryCode)
+    BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Gafware_ContactForm_Contacts SET QueryCode = @QueryCode WHERE QueryCode = @OldQueryCode AND PortalID = @PortalID
+    END
+	UPDATE {databaseOwner}{objectQualifier}Gafware_ContactForm_QuestionTypes
+	SET PortalID = @PortalID,
+		QueryCode = @QueryCode,
+		Topic = @Topic
+	WHERE QuestionTypeID = @QuestionTypeID
+END
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetEmail
+	@EmailID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails WHERE EmailID = @EmailID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_GetEmails
+	@PortalID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails WHERE PortalID = @PortalID ORDER BY DateSent
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_DeleteEmail
+	@EmailID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails WHERE EmailID = @EmailID
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_AddEmail
+	@PortalID int,
+	@FromAddress nvarchar(255),
+	@BccAddress nvarchar(255),
+	@Message nvarchar(2000),
+	@ContactNumber nvarchar(20),
+	@Name nvarchar(100),
+	@Area nvarchar(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails (PortalID, FromAddress, BccAddress, Message, ContactNumber, Name, Area, DateSent)
+	VALUES (@PortalID, @FromAddress, @BccAddress, @Message, @ContactNumber, @Name, @Area, getdate())
+	SELECT @@IDENTITY
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Gafware_ContactForm_UpdateEmail
+	@EmailID int,
+	@PortalID int,
+	@FromAddress nvarchar(255),
+	@BccAddress nvarchar(255),
+	@Message nvarchar(2000),
+	@ContactNumber nvarchar(20),
+	@Name nvarchar(100),
+	@Area nvarchar(50)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE {databaseOwner}{objectQualifier}Gafware_ContactForm_Emails
+	SET PortalID = @PortalID,
+		FromAddress = @FromAddress,
+		BccAddress = @BccAddress,
+		Message = @Message,
+		ContactNumber = @ContactNumber,
+		Name = @Name,
+		Area = @Area
+	WHERE EmailID = @EmailID
+END
+GO

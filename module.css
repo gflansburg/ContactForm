@@ -1,0 +1,67 @@
+.dnnContactForm .required {
+    color: red;
+}
+
+.dnnContactForm .errorlabel {
+    color: red;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.dnnContactForm .emailsent { 
+    color: green;
+    font-size: 12pt;
+    cursor: default;
+}
+
+.dnnContactForm .emailnotsent {
+    color: red;
+    font-size: 12pt;
+}
+
+.dnnContactForm .centerDiv {
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: solid 1px silver;
+    border-radius: 4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -100px;
+    line-height: 50px;
+    text-align: center;
+	z-index: 999;
+}
+
+.dnnContactForm #divCommands #olCommands, 
+.dnnContactForm #divCommands #olCommands li { display:inline; margin:0 auto 0 auto; }
+
+.dnnContactForm fieldset { margin:1.5em 0 0 0; padding:0; }
+
+.dnnContactForm fieldset ol { padding:1em 1em 0 1em; list-style:none; }
+
+.dnnContactForm fieldset li { padding-bottom:1em; list-style:none; line-height:1.6em; }
+
+.dnnContactForm fieldset.commands { border:none; }
+
+.dnnContactForm .recaptcha_only_if_privacy {
+    padding-bottom: 6px;
+}
+.dnnContactForm #recaptcha_response_field {
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid #c9c9c9 !important;
+    -webkit-border-radius: 3px !important;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.8), inset 0px 1px 2px 0px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.8), inset 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 12px !important;
+}
+
+.editTable TH {
+    padding: 4px;
+}
