@@ -481,7 +481,7 @@ namespace Gafware.Modules.ContactForm
 
                 return _phoneVisible;
             }
-            set { _areaVisible = value; }
+            set { _phoneVisible = value; }
         }
         private bool _contactnumber;
         public bool ValidateContactNumber

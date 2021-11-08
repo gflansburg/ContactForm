@@ -270,7 +270,7 @@ namespace Gafware.Modules.ContactForm
 
                 return _phoneVisible;
             }
-            set { _areaVisible = value; }
+            set { _phoneVisible = value; }
         }
         private bool _contactnumber;
         public bool ValidateContactNumber
@@ -986,11 +986,11 @@ namespace Gafware.Modules.ContactForm
                 {
                     strMail.Append("Sender Email: " + email.FromAddress + "<br />");
                 }
-                if(IsPhoneFieldVisible)
+                if (IsPhoneFieldVisible && !String.IsNullOrEmpty(email.ContactNumber))
                 {
                     strMail.Append("Sender Phone: " + email.ContactNumber + "<br />");
                 }
-                if (IsAreaFieldVisible)
+                if (IsAreaFieldVisible && !String.IsNullOrEmpty(email.Area))
                 {
                     strMail.Append("Request Area: " + email.Area + "<br />");
                 }
